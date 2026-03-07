@@ -1,6 +1,6 @@
 #include "texture.hpp"
 
-#include "logger.hpp"
+#include "util.hpp"
 
 #include "../native/glglfw.h"
 #include "../native/stb_image.h"

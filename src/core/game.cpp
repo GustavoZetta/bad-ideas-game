@@ -3,7 +3,7 @@
 #include <chrono>
 
 #include "game.hpp"
-#include "logger.hpp"
+#include "util.hpp"
 #include "window.hpp"
 
 Game::Game(bool d)
@@ -21,6 +21,7 @@ void Game::processInput() {
 }
 
 void Game::update(float deltaTime) {
+    
 }
 
 void Game::render() {

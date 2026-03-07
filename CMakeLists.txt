@@ -6,8 +6,8 @@ find_package(OpenGL REQUIRED)
 add_executable(JamGame
     src/main.cpp
 
-    src/core/logger.cpp
-    src/core/logger.hpp
+    src/core/util.cpp
+    src/core/util.hpp
 
     src/core/game.cpp
     src/core/game.hpp
@@ -23,7 +23,6 @@ add_executable(JamGame
     src/core/texture.hpp
     src/core/sprite.cpp
     src/core/sprite.hpp
-    
     
     src/native/glglfw.h
     src/native/gl.c

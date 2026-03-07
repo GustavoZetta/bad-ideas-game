@@ -1,6 +1,6 @@
 
 #include "window.hpp"
-#include "logger.hpp"
+#include "util.hpp"
 
 Window::Window(const std::string &title, int w, int h) : m_title(title), width(w), height(h) {}
 

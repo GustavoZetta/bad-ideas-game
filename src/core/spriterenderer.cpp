@@ -1,6 +1,6 @@
 #include "../native/glglfw.h"
 
-#include "logger.hpp"
+#include "util.hpp"
 #include "spriterenderer.hpp"
 
 #include <glm/common.hpp>
@@ -86,7 +86,7 @@ void SpriteRenderer::createSprite() {
     spriteList.emplace_back(VAO, VBO);
 
     Sprite &sprite = spriteList.back();
-    sprite.texture = std::make_unique<Texture>("../../src/assets/player.png", true);
+    sprite.texture = std::make_unique<Texture>("../../content/assets/player.png", true);
 
     sprite.color = glm::vec3(1.0f, 1.0f, 1.0f);
 

@@ -9,13 +9,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/matrix.hpp>
 
-#include "logger.hpp"
+#include "util.hpp"
 #include "shader.hpp"
 
-// L stands for local (as it is used only here in shader.cpp)
+// L stands for Local (as it is used only here in shader.cpp)
+// R stands for Relative Path
 // SP stands for Shader Path (path being file path, not any path)
-#define L_SP_VERTEX "../../src/shaders/vertex.glsl"
-#define L_SP_FRAGMENT "../../src/shaders/fragment.glsl"
+#define L_R_SP_VERTEX "/shaders/vertex.glsl"
+#define L_R_SP_FRAGMENT "/shaders/fragment.glsl"
 
 std::string Shader::getShaderSource(const std::string &filePath) {
     // Some black magic to get the file content
@@ -27,6 +28,7 @@ std::string Shader::getShaderSource(const std::string &filePath) {
 }
 
 unsigned int Shader::createShaderModule(const char *shaderSrc, unsigned int shaderType) {
+
     unsigned int shaderP = glCreateShader(shaderType);
 
     glShaderSource(shaderP, 1, &shaderSrc, NULL);
@@ -48,8 +50,10 @@ unsigned int Shader::createShaderProgram() {
     std::array<unsigned int, 2> modules = {};
 
     { // RAII takes care of this
-        std::string vertexSrc = getShaderSource(L_SP_VERTEX);
-        std::string fragmentSrc = getShaderSource(L_SP_FRAGMENT);
+        std::string vertexSrc = getShaderSource(Common::getContentPath() + L_R_SP_VERTEX);
+        Logger::log(vertexSrc);
+        std::string fragmentSrc = getShaderSource(Common::getContentPath() + L_R_SP_FRAGMENT);
+        Logger::log(fragmentSrc);
 
         modules[0] = Shader::createShaderModule(vertexSrc.c_str(), GL_VERTEX_SHADER);
         modules[1] = Shader::createShaderModule(fragmentSrc.c_str(), GL_FRAGMENT_SHADER);
