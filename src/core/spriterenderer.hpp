@@ -1,13 +1,20 @@
 #pragma once
 
+#define GLFW_INCLUDE_GLCOREARB
+
 #include <memory>
 #include <vector>
 
 #include "shader.hpp"
 #include "sprite.hpp"
-#include "texture.hpp"
 
 class SpriteRenderer {
+  public:
+    // Size of the rendered scene (temporary)
+    // TODO: Scene system
+    int width;
+    int height;
+
   public:
     SpriteRenderer();
 

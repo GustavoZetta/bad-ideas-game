@@ -6,18 +6,18 @@
 #include <string>
 
 #include <glm/common.hpp>
-#include <glm/matrix.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/matrix.hpp>
 
-#include "shader.hpp"
 #include "logger.hpp"
+#include "shader.hpp"
 
 // L stands for local (as it is used only here in shader.cpp)
 // SP stands for Shader Path (path being file path, not any path)
 #define L_SP_VERTEX "../../src/shaders/vertex.glsl"
 #define L_SP_FRAGMENT "../../src/shaders/fragment.glsl"
 
-std::string Shader::getShaderSource(const std::string& filePath) {
+std::string Shader::getShaderSource(const std::string &filePath) {
     // Some black magic to get the file content
     std::ifstream file(filePath);
     std::stringstream buffer;
@@ -54,7 +54,6 @@ unsigned int Shader::createShaderProgram() {
         modules[0] = Shader::createShaderModule(vertexSrc.c_str(), GL_VERTEX_SHADER);
         modules[1] = Shader::createShaderModule(fragmentSrc.c_str(), GL_FRAGMENT_SHADER);
     }
-    
 
     unsigned int shader = glCreateProgram();
     for (unsigned int shaderModule : modules) {
@@ -89,6 +88,15 @@ Shader::~Shader() {
 
 unsigned int Shader::ID() {
     return m_id;
+}
+
+// General
+
+void Shader::setInt(const char *uniformName, int integer, bool useProgram) {
+    if (useProgram) {
+        glUseProgram(m_id);
+    }
+    glUniform1i(glGetUniformLocation(m_id, uniformName), integer);
 }
 
 void Shader::setMat4x4(const char *uniformName, const glm::mat4 &matrix, bool useProgram) {

@@ -3,24 +3,33 @@
 #include "logger.hpp"
 #include "spriterenderer.hpp"
 
-#include <memory>
 #include <glm/common.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/matrix.hpp>
+#include <memory>
 
-SpriteRenderer::SpriteRenderer() : shader(nullptr), spriteList({}) {
+SpriteRenderer::SpriteRenderer() : shader(nullptr), width(640), height(480) {
     spriteList.reserve(16);
 }
 
 void SpriteRenderer::init() {
     Logger::log("Initializing Sprite Renderer...");
     shader = std::make_unique<Shader>();
+
+    shader->setInt("image", 0, true);
+
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(width), static_cast<float>(height), 0.0f, -1.0f, 1.0f);
+    shader->setMat4x4("projection", projection, true);
+
+    createSprite();
 }
 
 void SpriteRenderer::render() {
     glUseProgram(shader->ID());
 
-    for (Sprite &spr : spriteList) {
+    for (size_t i = 0; i < spriteList.size(); ++i) {
+        Sprite &spr = spriteList[i];
+
         glm::mat4 model = glm::mat4(1.0f);
 
         model = glm::translate(model, glm::vec3(spr.position, 0.0f));
@@ -44,8 +53,8 @@ void SpriteRenderer::render() {
 }
 
 void SpriteRenderer::cleanup() {
-    spriteList = {}; // Sprite destructor deletes VAOs & VBOs
-    shader = nullptr; // Shader destructor deletes shader program
+    spriteList.clear(); // Sprite destructor deletes VAOs & VBOs
+    shader.reset();     // Shader destructor deletes shader program
 }
 
 void SpriteRenderer::createSprite() {
@@ -58,8 +67,7 @@ void SpriteRenderer::createSprite() {
         0.0f, 0.0f, 0.0f, 0.0f,
         0.0f, 1.0f, 0.0f, 1.0f,
         1.0f, 1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f, 1.0f, 0.0f
-    };
+        1.0f, 0.0f, 1.0f, 0.0f};
 
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -75,6 +83,14 @@ void SpriteRenderer::createSprite() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
-    Sprite sprite(VAO, VBO);
-    sprite.texture = std::make_unique<Texture>();
+    spriteList.emplace_back(VAO, VBO);
+
+    Sprite &sprite = spriteList.back();
+    sprite.texture = std::make_unique<Texture>("../../src/assets/player.png", true);
+
+    sprite.color = glm::vec3(1.0f, 1.0f, 1.0f);
+
+    sprite.position = glm::vec2(50.0f, 50.0f);
+    sprite.size = glm::vec2(100.0f, 100.0f);
+    sprite.rotation = 0.0f;
 }

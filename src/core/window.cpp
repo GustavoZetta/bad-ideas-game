@@ -16,6 +16,7 @@ void Window::init() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
@@ -83,7 +84,7 @@ void Window::s_framebufferSizeCallback(GLFWwindow *winId, int w, int h) {
     // in this case, the Window class pointer.
     Window *winObj = (Window *)glfwGetWindowUserPointer(winId);
 
-    winObj->height = w;
+    winObj->height = h;
     winObj->width = w;
 
     // glViewport sets the size of the render so OpenGL can operate just fine.

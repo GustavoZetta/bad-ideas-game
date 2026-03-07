@@ -6,9 +6,12 @@
 class Sprite {
   public:
     // Just stores the VAO and VBO, then when the Sprite gets destroyed, it deletes both
-    Sprite(unsigned int VAO, unsigned int VBO); 
+    Sprite(unsigned int VAO, unsigned int VBO);
     // Deletes VAO & VBO
     ~Sprite();
+
+    Sprite(Sprite &&) = default;
+    Sprite &operator=(Sprite &&) = default;
 
     unsigned int getVAO();
     unsigned int getVBO();
