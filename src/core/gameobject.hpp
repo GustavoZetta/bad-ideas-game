@@ -20,5 +20,7 @@ class GameObject {
     GameObject(GameObject &&) = default;
     GameObject &operator=(GameObject &&) = default;
 
+    // Picks up the ownership of the texture
+    void storeTexture(Texture texture);
     void moveTo(glm::vec2 position);
 };

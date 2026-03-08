@@ -3,10 +3,8 @@
 
 #include <iostream>
 
-const std::string path = "../../content";
-
-const std::string &Common::getContentPath() {
-    return path;
+std::string Common::getContentPath() {
+    return "../../content";
 }
 
 // TODO: more robust logging

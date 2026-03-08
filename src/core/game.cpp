@@ -1,12 +1,14 @@
 #include "../native/glglfw.h"
 
-#include <chrono>
-
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "game.hpp"
+#include <chrono>
+
+#include "resourcemanager.hpp"
 #include "util.hpp"
 #include "window.hpp"
+
+#include "game.hpp"
 
 Game::Game()
     : window(nullptr),
@@ -41,9 +43,13 @@ void Game::update(float deltaTime) {
 }
 
 void Game::render() {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Can be GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT
+    glClear(GL_COLOR_BUFFER_BIT); // Can be GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT
 
-    renderer->drawSprite(static_cast<GameObject*>(world->player.get()));
+    renderer->drawSprite(world->bg.get());
+    for (GameObject &obj : world->objects) {
+        renderer->drawSprite(&obj);
+    }
+    renderer->drawSprite(world->player.get());
 }
 
 // Game logic functions
@@ -51,11 +57,11 @@ void Game::render() {
 void Game::init() {
     Logger::log("Initializing Game...");
 
-    window = std::make_unique<Window>("Fresh out of the box", 800, 450);
+    window = std::make_unique<Window>("Fresh out the box", 800, 600);
     renderer = std::make_unique<SpriteRenderer>();
 
     window->init();
-    renderer->init();
+    renderer->init(ResourceManager::loadShader(Common::getContentPath() + "/shaders/vertex.glsl", Common::getContentPath() + "/shaders/fragment.glsl"));
 
     world = std::make_unique<World>();
 
@@ -70,7 +76,7 @@ void Game::run() {
     Logger::log("Starting Game Loop...");
     const std::string wt = window->getTitle();
 
-    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f); 
+    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f);
     renderer->shader->setMat4x4("projection", projection, true);
 
     auto lastTime = std::chrono::steady_clock::now();

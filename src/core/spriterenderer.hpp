@@ -16,11 +16,12 @@ class SpriteRenderer {
   public:
     SpriteRenderer();
 
-    void createScreen();
-    void drawSprite(Texture &texture, glm::vec3 color, glm::vec2 position, glm::vec2 size, float rotation);
-    void drawSprite(GameObject *obj);
+    void createScreen(); // Creates the VBO & VAO used to render
+    void drawSprite(Texture &texture, glm::vec3 color, glm::vec2 position, glm::vec2 size, float rotation); // Draws a sprite with just raw data
+    void drawSprite(GameObject *obj); // Draws the data from a game object
 
-    void init();
+    // Inits with a shader created by the ResourceManager
+    void init(Shader s);
     void cleanup();
 
   private:

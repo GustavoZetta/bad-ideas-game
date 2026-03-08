@@ -1,6 +1,19 @@
+#include "../core/resourcemanager.hpp"
+#include "../core/util.hpp"
 
 #include "world.hpp"
 
 World::World() : player(nullptr) {
     player = std::make_unique<Player>();
+    bg = std::make_unique<GameObject>();
+    bg->storeTexture(ResourceManager::loadTexture(Common::getContentPath() + "/assets/bg.png", true));
+    bg->size = glm::vec2(800.0f, 600.0f);
+
+    GameObject obj;
+    obj.storeTexture(ResourceManager::loadTexture(Common::getContentPath() + "/assets/enemy.png", true));
+
+    obj.size = glm::vec2(100.0f);
+    obj.position = glm::vec2(400.0f, 300.0f);
+
+    objects.emplace_back(std::move(obj));
 }

@@ -1,4 +1,4 @@
-# Fresh out of the box
+# Fresh out the box
 This is a project to the [Bad Ideas Game Jam](https://itch.io/jam/bad-ideas-game-jam-2026)
 <br>
 Game made with some code from learnopengl.com

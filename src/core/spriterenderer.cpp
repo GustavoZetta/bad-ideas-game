@@ -84,9 +84,9 @@ void SpriteRenderer::drawSprite(GameObject *obj) {
 
 // Init / Exit logic
 
-void SpriteRenderer::init() {
+void SpriteRenderer::init(Shader s) {
     Logger::log("Initializing Sprite Renderer...");
-    shader = std::make_unique<Shader>();
+    shader = std::make_unique<Shader>(std::move(s));
 
     shader->setInt("image", 0, true);
 

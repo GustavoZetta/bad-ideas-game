@@ -13,6 +13,11 @@
 
 class Game {
   public:
+    std::unique_ptr<World> world;
+
+    std::unique_ptr<Window> window;
+    std::unique_ptr<SpriteRenderer> renderer;
+
     const std::chrono::nanoseconds NANOSECOND = std::chrono::nanoseconds(1000000000i64);
     const std::chrono::nanoseconds ONE_NANO = std::chrono::nanoseconds(1);
 
@@ -39,11 +44,6 @@ class Game {
     void setFramerate(int framerate);
 
   private:
-    std::unique_ptr<World> world;
-
-    std::unique_ptr<Window> window;
-    std::unique_ptr<SpriteRenderer> renderer;
-
     int m_framerate = 60;
     std::chrono::nanoseconds m_frametime = NANOSECOND / m_framerate;
 

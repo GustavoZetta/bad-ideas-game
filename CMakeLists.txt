@@ -13,6 +13,9 @@ add_executable(JamGame
     src/core/game.hpp
     src/core/gameobject.cpp
     src/core/gameobject.hpp
+
+    src/core/resourcemanager.cpp
+    src/core/resourcemanager.hpp
     
     src/core/window.cpp
     src/core/window.hpp
@@ -20,7 +23,6 @@ add_executable(JamGame
     src/core/spriterenderer.hpp
     src/core/shader.cpp
     src/core/shader.hpp
-    
     src/core/texture.cpp
     src/core/texture.hpp
 

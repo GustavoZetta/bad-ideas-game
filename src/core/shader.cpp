@@ -1,33 +1,12 @@
-#include "../native/glglfw.h"
+#include <glm/gtc/type_ptr.hpp>
 
 #include <array>
-#include <fstream>
-#include <sstream>
-#include <string>
-
-#include <glm/common.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/matrix.hpp>
 
 #include "util.hpp"
+
 #include "shader.hpp"
 
-// L stands for Local (as it is used only here in shader.cpp)
-// R stands for Relative Path
-// SP stands for Shader Path (path being file path, not any path)
-#define L_R_SP_VERTEX "/shaders/vertex.glsl"
-#define L_R_SP_FRAGMENT "/shaders/fragment.glsl"
-
-std::string Shader::getShaderSource(const std::string &filePath) {
-    // Some black magic to get the file content
-    std::ifstream file(filePath);
-    std::stringstream buffer;
-
-    buffer << file.rdbuf();
-    return buffer.str();
-}
-
-unsigned int Shader::createShaderModule(const char *shaderSrc, unsigned int shaderType) {
+unsigned int Shader::createModule(const char *shaderSrc, unsigned int shaderType) {
 
     unsigned int shaderP = glCreateShader(shaderType);
 
@@ -46,28 +25,23 @@ unsigned int Shader::createShaderModule(const char *shaderSrc, unsigned int shad
     return shaderP;
 }
 
-unsigned int Shader::createShaderProgram() {
+void Shader::createShader(const std::string &vertexSrc, const std::string &fragmentSrc) {
     std::array<unsigned int, 2> modules = {};
 
-    { // RAII takes care of this
-        std::string vertexSrc = getShaderSource(Common::getContentPath() + L_R_SP_VERTEX);
-        std::string fragmentSrc = getShaderSource(Common::getContentPath() + L_R_SP_FRAGMENT);
+    modules[0] = Shader::createModule(vertexSrc.c_str(), GL_VERTEX_SHADER);
+    modules[1] = Shader::createModule(fragmentSrc.c_str(), GL_FRAGMENT_SHADER);
 
-        modules[0] = Shader::createShaderModule(vertexSrc.c_str(), GL_VERTEX_SHADER);
-        modules[1] = Shader::createShaderModule(fragmentSrc.c_str(), GL_FRAGMENT_SHADER);
-    }
-
-    unsigned int shader = glCreateProgram();
+    m_id = glCreateProgram();
     for (unsigned int shaderModule : modules) {
-        glAttachShader(shader, shaderModule);
+        glAttachShader(m_id, shaderModule);
     }
-    glLinkProgram(shader);
+    glLinkProgram(m_id);
 
     int sucess;
-    glGetProgramiv(shader, GL_LINK_STATUS, &sucess);
+    glGetProgramiv(m_id, GL_LINK_STATUS, &sucess);
     if (!sucess) {
         char errorLog[1024];
-        glGetProgramInfoLog(shader, 1024, NULL, errorLog);
+        glGetProgramInfoLog(m_id, 1024, NULL, errorLog);
         Logger::log("Shader Linking error:\n");
         Logger::log(errorLog);
     }
@@ -76,13 +50,9 @@ unsigned int Shader::createShaderProgram() {
     for (unsigned int shaderModule : modules) {
         glDeleteShader(shaderModule);
     }
-
-    return shader;
 }
 
-Shader::Shader() {
-    m_id = createShaderProgram();
-};
+Shader::Shader() : m_id(0) {}
 
 Shader::~Shader() {
     glDeleteProgram(m_id);

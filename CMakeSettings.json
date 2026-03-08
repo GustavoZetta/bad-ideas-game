@@ -5,17 +5,24 @@
             "generator": "Ninja",
             "configurationType": "Debug",
             "inheritEnvironments": [ "msvc_x64_x64" ],
-            "buildRoot": "${projectDir}\\build\\${name}",
+            "buildRoot": "${projectDir}\\out\\${name}",
             "installRoot": "${projectDir}\\release\\${name}",
             "cmakeCommandArgs": "",
             "buildCommandArgs": "",
-            "ctestCommandArgs": ""
+            "ctestCommandArgs": "",
+            "variables": [
+                {
+                    "name": "CMAKE_INSTALL_PREFIX",
+                    "value": "C:/Users/Pichau/Documents/GustavoZeta/Coding/CPP/BadIdeasGame/out/install/x64-Debug",
+                    "type": "PATH"
+                }
+            ]
         },
         {
             "name": "x64-Release",
             "generator": "Ninja",
             "configurationType": "Release",
-            "buildRoot": "${projectDir}\\build\\${name}",
+            "buildRoot": "${projectDir}\\out\\${name}",
             "installRoot": "${projectDir}\\release\\${name}",
             "cmakeCommandArgs": "",
             "buildCommandArgs": "-v",
@@ -42,6 +49,11 @@
                     "name": "CMAKE_CXX_COMPILER",
                     "value": "${env.BIN_ROOT}/g++.exe",
                     "type": "STRING"
+                },
+                {
+                    "name": "CMAKE_INSTALL_PREFIX",
+                    "value": "C:/Users/Pichau/Documents/GustavoZeta/Coding/CPP/BadIdeasGame/out/install/x64-Release",
+                    "type": "PATH"
                 }
             ],
             "intelliSenseMode": "linux-gcc-x64"

@@ -3,7 +3,7 @@
 #include <string>
 
 struct Common {
-    static const std::string &getContentPath();
+    static std::string getContentPath();
 };
 
 // TODO: more robust logging
