@@ -11,6 +11,8 @@ add_executable(JamGame
 
     src/core/game.cpp
     src/core/game.hpp
+    src/core/gameobject.cpp
+    src/core/gameobject.hpp
     
     src/core/window.cpp
     src/core/window.hpp
@@ -21,8 +23,11 @@ add_executable(JamGame
     
     src/core/texture.cpp
     src/core/texture.hpp
-    src/core/sprite.cpp
-    src/core/sprite.hpp
+
+    src/game/player.cpp
+    src/game/player.hpp
+    src/game/world.cpp
+    src/game/world.hpp
     
     src/native/glglfw.h
     src/native/gl.c

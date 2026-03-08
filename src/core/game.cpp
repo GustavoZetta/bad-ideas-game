@@ -2,43 +2,62 @@
 
 #include <chrono>
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "game.hpp"
 #include "util.hpp"
 #include "window.hpp"
 
-Game::Game(bool d)
+Game::Game()
     : window(nullptr),
       renderer(nullptr),
-      debug(d),
+      world(nullptr),
       m_running(false) {}
 
 // Game loop functions
 
-void Game::processInput() {
+void Game::processInput(float deltaTime) {
     if (window->isKeyPressed(GLFW_KEY_W)) {
-        value += 0.01f;
+        world->player->position += glm::vec2(0.0f, -1.0f);
+    }
+    if (window->isKeyPressed(GLFW_KEY_A)) {
+        world->player->position += glm::vec2(-1.0f, 0.0f);
+    }
+    if (window->isKeyPressed(GLFW_KEY_S)) {
+        world->player->position += glm::vec2(0.0f, 1.0f);
+    }
+    if (window->isKeyPressed(GLFW_KEY_D)) {
+        world->player->position += glm::vec2(1.0f, 0.0f);
+    }
+    if (window->isKeyPressed(GLFW_KEY_F4)) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    }
+    if (window->isKeyPressed(GLFW_KEY_F5)) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 }
 
 void Game::update(float deltaTime) {
-    
 }
 
 void Game::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Can be GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT
-    renderer->render();
+
+    renderer->drawSprite(static_cast<GameObject*>(world->player.get()));
 }
 
-// Game logic functionsa
+// Game logic functions
 
 void Game::init() {
     Logger::log("Initializing Game...");
 
-    window = std::make_unique<Window>("Bad Ideas Game", 400, 300);
+    window = std::make_unique<Window>("Fresh out of the box", 800, 450);
     renderer = std::make_unique<SpriteRenderer>();
 
     window->init();
     renderer->init();
+
+    world = std::make_unique<World>();
 
     Logger::log("Showing Window...");
     window->showWindow();
@@ -50,6 +69,9 @@ void Game::init() {
 void Game::run() {
     Logger::log("Starting Game Loop...");
     const std::string wt = window->getTitle();
+
+    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 600.0f, 0.0f, -1.0f, 1.0f); 
+    renderer->shader->setMat4x4("projection", projection, true);
 
     auto lastTime = std::chrono::steady_clock::now();
 
@@ -93,12 +115,13 @@ void Game::run() {
         }
 
         if (canRender) {
+            float deltaTime = std::chrono::duration<float>(delta).count();
+
             const std::string title = wt + std::string(" - FPS: ") + std::to_string(fps);
             window->setTitle(title);
 
-            processInput();
+            processInput(deltaTime);
 
-            float deltaTime = std::chrono::duration<float>(delta).count();
             update(deltaTime);
 
             render();

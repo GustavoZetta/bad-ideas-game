@@ -5,7 +5,7 @@
 #include "../native/glglfw.h"
 #include "../native/stb_image.h"
 
-Texture::Texture(const char *filepath, bool alpha) : width(0), height(0), internal_format(GL_RGB), img_format(GL_RGB), min_filter_mode(GL_LINEAR), max_filter_mode(GL_LINEAR), wrap_mode_s(GL_REPEAT), wrap_mode_t(GL_REPEAT) {
+Texture::Texture(const std::string &filepath, bool alpha) : width(0), height(0), internal_format(GL_RGB), img_format(GL_RGB), min_filter_mode(GL_NEAREST), max_filter_mode(GL_NEAREST), wrap_mode_s(GL_REPEAT), wrap_mode_t(GL_REPEAT) {
     if (alpha) {
         internal_format = GL_RGBA;
         img_format = GL_RGB;
@@ -15,7 +15,7 @@ Texture::Texture(const char *filepath, bool alpha) : width(0), height(0), intern
     int height;
     int nrChannels;
 
-    unsigned char *data = stbi_load(filepath, &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(filepath.c_str(), &width, &height, &nrChannels, 0);
 
     createTexture(width, height, data);
     stbi_image_free(data);

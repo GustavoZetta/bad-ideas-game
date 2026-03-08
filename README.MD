@@ -1,14 +1,14 @@
 # Fresh out of the box
-This is a project to the Bad Ideas Game Jam
+This is a project to the [Bad Ideas Game Jam](https://itch.io/jam/bad-ideas-game-jam-2026)
 <br>
-Engine made with some code from learnopengl.com
+Game made with some code from learnopengl.com
 
 ## Main Idea
-You are an innocent player 
+Idk yet lol
 
 ## Compiling
 ### Dependencies
-The engine uses four dependencies:
+The game uses four dependencies:
 * [GLFW](https://www.glfw.org/)
 * [GLAD](https://glad.dav1d.de/)
 * [GLM](https://glm.g-truc.net/0.9.8/index.html)

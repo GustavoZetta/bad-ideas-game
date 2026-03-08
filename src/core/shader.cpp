@@ -51,9 +51,7 @@ unsigned int Shader::createShaderProgram() {
 
     { // RAII takes care of this
         std::string vertexSrc = getShaderSource(Common::getContentPath() + L_R_SP_VERTEX);
-        Logger::log(vertexSrc);
         std::string fragmentSrc = getShaderSource(Common::getContentPath() + L_R_SP_FRAGMENT);
-        Logger::log(fragmentSrc);
 
         modules[0] = Shader::createShaderModule(vertexSrc.c_str(), GL_VERTEX_SHADER);
         modules[1] = Shader::createShaderModule(fragmentSrc.c_str(), GL_FRAGMENT_SHADER);

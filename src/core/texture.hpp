@@ -18,7 +18,7 @@ class Texture {
 
   public:
     // Gets its content from a file
-    Texture(const char *filepath, bool alpha);
+    Texture(const std::string &filepath, bool alpha);
 
     // Returns the OpenGL Texture ID
     unsigned int ID();

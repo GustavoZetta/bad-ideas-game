@@ -3,14 +3,14 @@
 
 #include <iostream>
 
+const std::string path = "../../content";
+
 const std::string &Common::getContentPath() {
-    return "../../content";
+    return path;
 }
 
 // TODO: more robust logging
 void Logger::log(std::string message) {
-    if (true) { // Set false for a release build
-        std::cout << message << std::endl;
-    }
+    std::cout << message << std::endl;
 }
 

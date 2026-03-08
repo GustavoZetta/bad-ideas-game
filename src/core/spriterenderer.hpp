@@ -2,30 +2,28 @@
 
 #define GLFW_INCLUDE_GLCOREARB
 
+#include <glm/common.hpp>
 #include <memory>
-#include <vector>
 
+#include "gameobject.hpp"
 #include "shader.hpp"
-#include "sprite.hpp"
+#include "texture.hpp"
 
 class SpriteRenderer {
   public:
-    // Size of the rendered scene (temporary)
-    // TODO: Scene system
-    int width;
-    int height;
+    std::unique_ptr<Shader> shader;
 
   public:
     SpriteRenderer();
 
-    void createSprite();
+    void createScreen();
+    void drawSprite(Texture &texture, glm::vec3 color, glm::vec2 position, glm::vec2 size, float rotation);
+    void drawSprite(GameObject *obj);
 
     void init();
-    void render();
     void cleanup();
 
   private:
-    std::unique_ptr<Shader> shader;
-
-    std::vector<Sprite> spriteList;
+    unsigned int m_VAO;
+    unsigned int m_VBO;
 };

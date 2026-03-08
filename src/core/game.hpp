@@ -1,10 +1,12 @@
 #pragma once
 
 #include <chrono>
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include <glm/glm.hpp>
+
+#include "../game/world.hpp"
 
 #include "spriterenderer.hpp"
 #include "window.hpp"
@@ -13,16 +15,13 @@ class Game {
   public:
     const std::chrono::nanoseconds NANOSECOND = std::chrono::nanoseconds(1000000000i64);
     const std::chrono::nanoseconds ONE_NANO = std::chrono::nanoseconds(1);
+
     int fps = 0;
-
-    const bool debug;
-
-    float value = 0.0f;
 
   public:
     // Starts the default variables and sets the
     // window title and the debug variable in the constructor.
-    Game(bool debug);
+    Game();
 
     // Initializes window and renderer.
     void init();
@@ -40,6 +39,8 @@ class Game {
     void setFramerate(int framerate);
 
   private:
+    std::unique_ptr<World> world;
+
     std::unique_ptr<Window> window;
     std::unique_ptr<SpriteRenderer> renderer;
 
@@ -50,7 +51,7 @@ class Game {
     bool m_wireframe;
 
   private:
-    void processInput();
-    void update(float deltaTime);
-    void render();
+    virtual void processInput(float deltaTime);
+    virtual void update(float deltaTime);
+    virtual void render();
 };

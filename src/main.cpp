@@ -8,10 +8,8 @@
 
 #include "core/game.hpp"
 
-const bool debug = true;
-
 int main() {
-    Game game(debug);
+    Game game;
 
     game.init();
     game.run();
