@@ -1,19 +1,20 @@
 # Fresh out the box
-This is a project to the [Bad Ideas Game Jam](https://itch.io/jam/bad-ideas-game-jam-2026)
-<br>
-Game made with some code from learnopengl.com
+This is a project to the [Bad Ideas Game Jam](https://itch.io/jam/bad-ideas-game-jam-2026) <br>
+Game made with some code from [Learn OpenGL](https://learnopengl.com)
 
 ## Compiling
+The project was made using [CMake](https://cmake.org/) for cross-plataform compiling
+
 ### Dependencies
-The game uses four dependencies:
+The game uses five dependencies:
 * [GLFW](https://www.glfw.org/)
 * [GLAD](https://glad.dav1d.de/)
 * [GLM](https://glm.g-truc.net/0.9.8/index.html)
 * [STB Image](https://github.com/nothings/stb/blob/master/stb_image.h)
-* [YAML-Cpp](https://github.com/jbeder/yaml-cpp)
+* [YAML-Cpp](https://github.com/jbeder/yaml-cpp) (downloaded automatically)
 <br>
 If there are some kind of error involving those, try to download your machine specific binary <br>
-Later, automatic dependency download will be added
+Later, automatic dependencies download will be added
 
 ### Compilers
 The game should compile just fine with **MSVC 2022** and **GCC**, but it may have problems with other compilers
