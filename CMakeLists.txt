@@ -14,17 +14,23 @@ add_executable(JamGame
     src/core/gameobject.cpp
     src/core/gameobject.hpp
 
+    src/core/window.cpp
+    src/core/window.hpp
     src/core/resourcemanager.cpp
     src/core/resourcemanager.hpp
     
-    src/core/window.cpp
-    src/core/window.hpp
-    src/core/spriterenderer.cpp
-    src/core/spriterenderer.hpp
-    src/core/shader.cpp
-    src/core/shader.hpp
-    src/core/sprite.cpp
-    src/core/sprite.hpp
+    src/core/renderer/spriterenderer.cpp
+    src/core/renderer/spriterenderer.hpp
+    src/core/renderer/shader.cpp
+    src/core/renderer/shader.hpp
+    src/core/renderer/sprite.cpp
+    src/core/renderer/sprite.hpp
+    src/core/renderer/animatedsprite.cpp
+    src/core/renderer/animatedsprite.hpp
+    src/core/renderer/staticsprite.cpp
+    src/core/renderer/staticsprite.hpp
+    src/core/renderer/textureatlas.cpp
+    src/core/renderer/textureatlas.hpp
 
     src/game/player.cpp
     src/game/player.hpp
@@ -47,6 +53,8 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(yaml-cpp)
 
 target_include_directories(JamGame PRIVATE dependencies)
+target_include_directories(JamGame PRIVATE src)
+
 target_link_directories(JamGame PRIVATE lib)
 
 target_link_libraries(JamGame

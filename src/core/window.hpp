@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../native/glglfw.h"
+#include "native/glglfw.h"
 
 #include <string>
 

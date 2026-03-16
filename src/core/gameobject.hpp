@@ -1,12 +1,29 @@
 #pragma once
 
-#include "sprite.hpp"
-#include <memory>
 #include <glm/common.hpp>
+
+#include <memory>
+
+#include "core/renderer/animatedsprite.hpp"
+#include "core/renderer/staticsprite.hpp"
+#include "core/renderer/textureatlas.hpp"
+
+enum class SpriteType {
+  STATIC_SPRITE,
+  ANIMATED_SPRITE,
+  TEXTURE_ATLAS
+};
 
 class GameObject {
   public:
-    std::unique_ptr<Sprite> sprite;
+    SpriteType sprType;
+
+    std::unique_ptr<StaticSprite> staticSprite;
+    std::unique_ptr<AnimatedSprite> animatedSprite;
+
+    TextureAtlas* textureAtlas;
+    std::string atlasKey;
+
     glm::vec3 color;
 
     glm::vec2 position;
@@ -17,13 +34,14 @@ class GameObject {
   public:
     GameObject();
 
-    GameObject(GameObject &&) = default;
-    GameObject &operator=(GameObject &&) = default;
+    // These also set the sprType variable
+    void setSprite(std::unique_ptr<StaticSprite> staticSprite);
+    void setSprite(std::unique_ptr<AnimatedSprite> animatedSprite);
 
-    // Picks up the ownership of the texture
-    void storeSprite(Sprite sprite);
-    void moveTo(glm::vec2 position);
+    void setAtlas(TextureAtlas *textureAtlas);
+
+    unsigned int getSpriteID();
 
     // Should be called every frame
-    void update(float deltaTime);
+    virtual void update(float deltaTime);
 };

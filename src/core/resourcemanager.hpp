@@ -1,12 +1,16 @@
 #pragma once
 
-#include "shader.hpp"
-#include "sprite.hpp"
+#include "core/renderer/animatedsprite.hpp"
+#include "core/renderer/shader.hpp"
+#include "core/renderer/staticsprite.hpp"
+#include "core/renderer/textureatlas.hpp"
 
 class ResourceManager {
   public:
-    static Sprite loadSprite(const std::string &imagePath, const std::string &configPath, bool alpha);
-    static Sprite loadSprite(const std::string &imagePath, bool alpha);
+    static std::unique_ptr<StaticSprite> loadSprite(const std::string &imagePath, bool alpha);
+    static std::unique_ptr<AnimatedSprite> loadSprite(const std::string &imagePath, const std::string &configPath, bool alpha);
+    static std::unique_ptr<TextureAtlas> loadAtlas(const std::string &imagePath, const std::string &configPath, bool alpha);
+
     static Shader loadShader(const std::string &vertexPath, const std::string &fragmentPath);
 
   private:

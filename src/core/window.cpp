@@ -1,6 +1,6 @@
+#include "util.hpp"
 
 #include "window.hpp"
-#include "util.hpp"
 
 const float Window::aspectRatioX = 16.0f;
 const float Window::aspectRatioY = 9.0f;

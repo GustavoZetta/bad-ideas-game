@@ -1,10 +1,10 @@
+#include "core/util.hpp"
+
 #include <glm/gtc/type_ptr.hpp>
 
 #include <array>
 
-#include "util.hpp"
-
-#include "shader.hpp"
+#include "core/renderer/shader.hpp"
 
 unsigned int Shader::createModule(const char *shaderSrc, unsigned int shaderType) {
 

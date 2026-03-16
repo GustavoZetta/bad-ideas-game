@@ -1,14 +1,15 @@
-#include "../native/glglfw.h"
+#include "native/glglfw.h"
+
+#include "core/util.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <chrono>
 
-#include "resourcemanager.hpp"
-#include "util.hpp"
-#include "window.hpp"
+#include "core/resourcemanager.hpp"
+#include "core/window.hpp"
 
-#include "game.hpp"
+#include "core/game.hpp"
 
 Game::Game()
     : window(nullptr),
@@ -20,16 +21,16 @@ Game::Game()
 
 void Game::processInput(float deltaTime) {
     if (window->isKeyPressed(GLFW_KEY_W)) {
-        world->player->position += glm::vec2(0.0f, -1.0f);
+        world->player->position += glm::vec2(0.0f, -1.0f) * world->player->playerSpeed * deltaTime;
     }
     if (window->isKeyPressed(GLFW_KEY_A)) {
-        world->player->position += glm::vec2(-1.0f, 0.0f);
+        world->player->position += glm::vec2(-1.0f, 0.0f) * world->player->playerSpeed * deltaTime;
     }
     if (window->isKeyPressed(GLFW_KEY_S)) {
-        world->player->position += glm::vec2(0.0f, 1.0f);
+        world->player->position += glm::vec2(0.0f, 1.0f) * world->player->playerSpeed * deltaTime;
     }
     if (window->isKeyPressed(GLFW_KEY_D)) {
-        world->player->position += glm::vec2(1.0f, 0.0f);
+        world->player->position += glm::vec2(1.0f, 0.0f) * world->player->playerSpeed * deltaTime;
     }
     if (window->isKeyPressed(GLFW_KEY_F4)) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -46,11 +47,11 @@ void Game::update(float deltaTime) {
 void Game::render() {
     glClear(GL_COLOR_BUFFER_BIT); // Can be GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT
 
-    renderer->drawSprite(world->bg.get());
+    renderer->drawObject(world->bg.get());
     for (GameObject &obj : world->objects) {
-        renderer->drawSprite(&obj);
+        renderer->drawObject(&obj);
     }
-    renderer->drawSprite(world->player.get());
+    renderer->drawObject(world->player.get());
 }
 
 // Game logic functions

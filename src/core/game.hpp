@@ -6,10 +6,10 @@
 
 #include <glm/glm.hpp>
 
-#include "../game/world.hpp"
+#include "core/renderer/spriterenderer.hpp"
+#include "core/window.hpp"
 
-#include "spriterenderer.hpp"
-#include "window.hpp"
+#include "game/world.hpp"
 
 class Game {
   public:
@@ -51,7 +51,7 @@ class Game {
     bool m_wireframe;
 
   private:
-    virtual void processInput(float deltaTime);
-    virtual void update(float deltaTime);
-    virtual void render();
+    void processInput(float deltaTime);
+    void update(float deltaTime);
+    void render();
 };

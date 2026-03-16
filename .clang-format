@@ -1,0 +1,7 @@
+BasedOnStyle: LLVM 
+ClosingParenPosition: NextLine
+UseTab: Never
+IndentWidth: 4
+BreakBeforeBraces: Attach
+NamespaceIndentation: All
+ColumnLimit: 0 
