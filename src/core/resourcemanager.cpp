@@ -14,8 +14,7 @@
 // Static Sprite
 
 std::unique_ptr<StaticSprite> ResourceManager::loadSprite(const std::string &imagePath, bool alpha) {
-    std::unique_ptr<StaticSprite> staticSpr = std::make_unique<StaticSprite>();
-    staticSpr->sprite = std::make_unique<Sprite>();
+    std::unique_ptr<StaticSprite> staticSpr = std::make_unique<StaticSprite>(std::make_unique<Sprite>());
 
     if (alpha) {
         staticSpr->sprite->internal_format = GL_RGBA;
@@ -28,7 +27,7 @@ std::unique_ptr<StaticSprite> ResourceManager::loadSprite(const std::string &ima
 
     unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, alpha ? 4 : 3);
     if (!data) {
-        Logger::log("Texture loading error: " + std::string(imagePath));
+        Logger::log("Texture loading error: " + imagePath);
         Logger::log("Reason: " + std::string(stbi_failure_reason()));
     }
 
@@ -54,8 +53,7 @@ std::unique_ptr<AnimatedSprite> ResourceManager::loadSprite(const std::string &i
     int frames = anim["frames"].as<int>(1);
     int fps = anim["fps"].as<int>(1);
 
-    std::unique_ptr<AnimatedSprite> animSpr = std::make_unique<AnimatedSprite>(rows, columns, fps, frames);
-    animSpr->sprite = std::make_unique<Sprite>();
+    std::unique_ptr<AnimatedSprite> animSpr = std::make_unique<AnimatedSprite>(std::make_unique<Sprite>(), rows, columns, fps, frames);
 
     if (alpha) {
         animSpr->sprite->internal_format = GL_RGBA;
@@ -68,7 +66,7 @@ std::unique_ptr<AnimatedSprite> ResourceManager::loadSprite(const std::string &i
 
     unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, alpha ? 4 : 3);
     if (!data) {
-        Logger::log("Texture loading error: " + std::string(imagePath));
+        Logger::log("Texture loading error: " + imagePath);
         Logger::log("Reason: " + std::string(stbi_failure_reason()));
     }
 
@@ -82,7 +80,29 @@ std::unique_ptr<AnimatedSprite> ResourceManager::loadSprite(const std::string &i
 
 // TODO: Implement texture atlas
 std::unique_ptr<TextureAtlas> ResourceManager::loadAtlas(const std::string &imagePath, const std::string &configPath, bool alpha) {
-    std::unique_ptr<TextureAtlas> atlas = std::make_unique<TextureAtlas>();
+    std::unique_ptr<TextureAtlas> atlas = std::make_unique<TextureAtlas>(std::make_unique<Sprite>());
+
+    YAML::Node config = YAML::LoadFile(configPath);
+
+
+
+    if (alpha) {
+        atlas->sprite->internal_format = GL_RGBA;
+        atlas->sprite->img_format = GL_RGBA;
+    }
+    
+    int width;
+    int height;
+    int nrChannels;
+
+    unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, alpha ? 4 : 3);
+    if (!data) {
+        Logger::log("Texture loading error: " + imagePath);
+        Logger::log("Reason: " + std::string(stbi_failure_reason()));
+    }
+
+    atlas->sprite->createSprite(width, height, data);
+    stbi_image_free(data);
 
     return std::move(atlas);
 }

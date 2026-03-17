@@ -19,7 +19,7 @@ class TextureAtlas {
     std::unique_ptr<Sprite> sprite;
     
   public:
-    TextureAtlas();
+    TextureAtlas(std::unique_ptr<Sprite> spr);
 
     // Registers an atlas entry and put it into entries
     void addEntry(const std::string &name, int x, int y, int w, int h);

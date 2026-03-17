@@ -20,7 +20,7 @@ class AnimatedSprite {
     float timer;
 
   public:
-    AnimatedSprite(int rows, int cols, int fps, int frames);
+    AnimatedSprite(std::unique_ptr<Sprite> spr, int rows, int cols, int fps, int frames);
 
     void update(float deltaTime);
 

@@ -1,8 +1,10 @@
 #include "core/renderer/animatedsprite.hpp"
 
-AnimatedSprite::AnimatedSprite(int rows, int cols, int fps, int frames)
-    : cols(cols), rows(rows), frames(frames),
-      currentFrame(0), frameDuration(1.0f / fps), timer(0.0f) {}
+AnimatedSprite::AnimatedSprite(std::unique_ptr<Sprite> spr, int rows, int cols, int fps, int frames)
+    : sprite(nullptr), cols(cols), rows(rows), frames(frames),
+      currentFrame(0), frameDuration(1.0f / fps), timer(0.0f) {
+    sprite = std::move(spr);
+}
 
 void AnimatedSprite::update(float deltaTime) {
     timer += deltaTime;

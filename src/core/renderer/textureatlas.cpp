@@ -1,7 +1,7 @@
 #include "core/renderer/textureatlas.hpp"
 
-TextureAtlas::TextureAtlas() {
-    
+TextureAtlas::TextureAtlas(std::unique_ptr<Sprite> spr) : sprite(nullptr) {
+    sprite = std::move(spr);
 }
 
 void TextureAtlas::addEntry(const std::string &name, int x, int y, int w, int h) {
