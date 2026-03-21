@@ -34,6 +34,14 @@ void Game::processInput(float deltaTime) {
     if (window->isKeyPressed(GLFW_KEY_D)) {
         world->player->position += glm::vec2(1.0f, 0.0f) * world->player->playerSpeed * deltaTime;
     }
+
+    if (window->isKeyPressed(GLFW_KEY_W) || window->isKeyPressed(GLFW_KEY_A) || window->isKeyPressed(GLFW_KEY_S) || window->isKeyPressed(GLFW_KEY_D)) {
+        world->player->setWalking(true);
+    } else {
+        world->player->setWalking(false);
+    }
+
+
     if (window->isKeyPressed(GLFW_KEY_F4)) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
@@ -75,7 +83,7 @@ void Game::init() {
     Logger::log("Showing Window...");
     window->showWindow();
 
-    setFramerate(0);
+    setFramerate(3);
 
     Logger::log("Game Initialized!");
     Logger::log("--------------------------------");

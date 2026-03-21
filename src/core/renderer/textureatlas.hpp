@@ -1,17 +1,12 @@
 #pragma once
 
-#include <glm/common.hpp>
-
 #include <memory>
 #include <string>
 #include <unordered_map>
 
-#include "core/renderer/sprite.hpp"
+#include "core/renderer/uvinfo.hpp"
 
-struct AtlasEntry {
-    glm::vec2 uvOffset;
-    glm::vec2 uvSize;
-};
+#include "core/renderer/sprite.hpp"
 
 // Expects you to initialize the sprite
 class TextureAtlas {
@@ -22,11 +17,12 @@ class TextureAtlas {
     TextureAtlas(std::unique_ptr<Sprite> spr);
     TextureAtlas(std::unique_ptr<Sprite> spr, int amountToAlloc);
 
-    // Registers an atlas entry and put it into entries
-    void addEntry(const std::string &name, int x, int y, int w, int h);
+    // Calculates an UvInfo based on params and adds it into the sprite map
+    void addUvInfo(const std::string &name, int x, int y, int w, int h);
 
-    AtlasEntry getEntry(const std::string &name);
+    UvInfo getUvInfo(const std::string &name);
 
   private:
-    std::unordered_map<std::string, AtlasEntry> m_entries;
+    // Holds the information of all sprites
+    std::unordered_map<std::string, UvInfo> m_spriteInfoMap;
 };

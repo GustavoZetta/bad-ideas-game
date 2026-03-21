@@ -42,20 +42,15 @@ std::unique_ptr<StaticSprite> ResourceManager::loadSprite(const std::string &ima
 // Animated Sprite
 
 std::unique_ptr<AnimatedSprite> ResourceManager::loadSprite(const std::string &imagePath, const std::string &configPath, bool alpha) {
-    YAML::Node sprConfig = YAML::LoadFile(configPath);
+    YAML::Node config = YAML::LoadFile(configPath);
 
-    YAML::Node anim = sprConfig["animation"];
+    YAML::Node animations = config["animations"];
 
-    if (!anim.IsMap()) {
-        Logger::log("Warning: Couldn't open animation config: " + configPath);
+    if (!animations.IsMap()) {
+        Logger::log("Unable to load animated sprite config: " + configPath);
     }
 
-    int rows = anim["rows"].as<int>(1);
-    int columns = anim["columns"].as<int>(1);
-    int frames = anim["frames"].as<int>(1);
-    int fps = anim["fps"].as<int>(1);
-
-    std::unique_ptr<AnimatedSprite> animSpr = std::make_unique<AnimatedSprite>(std::make_unique<Sprite>(), rows, columns, fps, frames);
+    std::unique_ptr<AnimatedSprite> animSpr = std::make_unique<AnimatedSprite>(std::make_unique<Sprite>());
 
     if (alpha) {
         animSpr->sprite->internal_format = GL_RGBA;
@@ -74,6 +69,30 @@ std::unique_ptr<AnimatedSprite> ResourceManager::loadSprite(const std::string &i
 
     animSpr->sprite->createSprite(width, height, data);
     stbi_image_free(data);
+
+    int gridsize = config["gridsize"].as<int>(32);
+
+    for (auto state : animations) {
+        YAML::Node frames = state.second["frames"];
+
+        if (!frames.IsSequence()) {
+            Logger::log("Unable to load animated sprite info from config: " + configPath);
+        }
+
+        AnimatedInfoList list;
+        list.fps = state.second["fps"].as<int>(15);
+
+        for (auto frame : frames) {
+            int x = frame["x"].as<int>(0) * gridsize;
+            int y = frame["y"].as<int>(0) * gridsize;
+            int width = frame["width"].as<int>(1) * gridsize;
+            int height = frame["height"].as<int>(1) * gridsize;
+
+            list.animationFrameInfo.push_back(animSpr->calcUvInfo(x, y, width, height));
+        }
+
+        animSpr->addAnimationInfoList(state.first.as<std::string>(""), list);
+    }
 
     return std::move(animSpr);
 }
@@ -118,12 +137,12 @@ std::unique_ptr<TextureAtlas> ResourceManager::loadAtlas(const std::string &imag
 
     for (auto it : tilesetInfo) {
         std::string name = it.first.as<std::string>("");
-        int x = it.second["x"].as<int>(0);
-        int y = it.second["y"].as<int>(0);
+        int x = it.second["x"].as<int>(0) * gridsize;
+        int y = it.second["y"].as<int>(0) * gridsize;
         int width = it.second["width"].as<int>(1) * gridsize;
         int height = it.second["height"].as<int>(1) * gridsize;
 
-        atlas->addEntry(name, x, y, width, height);
+        atlas->addUvInfo(name, x, y, width, height);
     }
 
     return std::move(atlas);
@@ -159,9 +178,9 @@ std::unique_ptr<Scene> ResourceManager::loadScene(const std::string &scenePath, 
 
                 std::istringstream sstream(line);
 
-                while (sstream >> token) {  // reads each word separated by space
+                while (sstream >> token) { // reads each word separated by space
                     if (token != nullchar) {
-                        
+
                         GameObject object;
 
                         object.setAtlas(scene->atlas.get());
@@ -172,8 +191,6 @@ std::unique_ptr<Scene> ResourceManager::loadScene(const std::string &scenePath, 
                         object.position = glm::vec2(
                             Game::objectSize * x,
                             Game::objectSize * y);
-
-                        Logger::log(token + " " + std::to_string(x) + " " + std::to_string(y));
 
                         scene->sprites.push_back(std::move(object));
                     }

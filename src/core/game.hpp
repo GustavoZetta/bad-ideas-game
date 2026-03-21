@@ -11,6 +11,15 @@
 
 #include "game/world.hpp"
 
+enum class GameState {
+  MAIN_MENU,
+  WORLD,
+  PAUSED,
+  CARD_FIGHT,
+  CARD_TRADE,
+  DEATH_MENU
+};
+
 class Game {
   public:
     std::unique_ptr<World> world;

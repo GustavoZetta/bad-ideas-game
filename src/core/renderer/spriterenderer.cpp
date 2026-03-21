@@ -36,7 +36,6 @@ void SpriteRenderer::createScreen() {
     glBindVertexArray(0);
 }
 
-
 void SpriteRenderer::drawObject(GameObject *obj) {
     glUseProgram(shader->ID());
 
@@ -58,20 +57,22 @@ void SpriteRenderer::drawObject(GameObject *obj) {
     glm::vec2 uvOffset = glm::vec2(0.0f);
     glm::vec2 uvSize = glm::vec2(1.0f);
 
+    UvInfo uv;
+
     switch (obj->sprType) {
     case SpriteType::STATIC_SPRITE:
-        uvOffset = obj->staticSprite->getUVOffset();
-        uvSize = obj->staticSprite->getUVSize();
+        uvOffset = obj->staticSprite->uvOffset;
+        uvSize = obj->staticSprite->uvSize;
         break;
     case SpriteType::ANIMATED_SPRITE:
-        uvOffset = obj->animatedSprite->getUVOffset();
-        uvSize = obj->animatedSprite->getUVSize();
+        uv = obj->animatedSprite->getUvInfo();
+        uvOffset = uv.uvOffset;
+        uvSize = uv.uvSize;
         break;
     case SpriteType::TEXTURE_ATLAS:
-        AtlasEntry entry = obj->textureAtlas->getEntry(obj->atlasKey);
-
-        uvOffset = entry.uvOffset;
-        uvSize = entry.uvSize;
+        uv = obj->textureAtlas->getUvInfo(obj->atlasKey);
+        uvOffset = uv.uvOffset;
+        uvSize = uv.uvSize;
         break;
     }
 

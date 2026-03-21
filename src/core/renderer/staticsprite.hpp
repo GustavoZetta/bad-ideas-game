@@ -11,9 +11,8 @@ class StaticSprite {
   public:
     std::unique_ptr<Sprite> sprite;
 
+    glm::vec2 uvSize;
+    glm::vec2 uvOffset;
   public:
     StaticSprite(std::unique_ptr<Sprite> spr);
-
-    glm::vec2 getUVSize();
-    glm::vec2 getUVOffset();
 };

@@ -1,4 +1,4 @@
-gridsize: 32 # multiplies height & width by (32 * 1, for example)
+gridsize: 32 # multiplies height, width, x and y (32 * x, 32 * y...)
 tileset: # These chars are used in the scene
   '#':
     x: 0

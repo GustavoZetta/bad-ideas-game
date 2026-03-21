@@ -4,7 +4,11 @@
 
 class Player : public GameObject {
   public:
+    bool walking;
+    float playerSpeed;
+
+  public:
     Player();
 
-    float playerSpeed;
+    void setWalking(bool value);
 };

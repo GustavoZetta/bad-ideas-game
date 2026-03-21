@@ -3,13 +3,28 @@
 
 #include "game/player.hpp"
 
-Player::Player() : GameObject(), playerSpeed(100.0f) {
-    std::unique_ptr<AnimatedSprite> animatedSpr = ResourceManager::loadSprite(
+Player::Player() : GameObject(), playerSpeed(100.0f), walking(false) {
+    std::unique_ptr<AnimatedSprite> animSpr = ResourceManager::loadSprite(
         Common::getContentPath() + "/assets/walking.png",
         Common::getContentPath() + "/assets/walking.yml",
         true
     );
-    setSprite(std::move(animatedSpr));
-
+    animSpr->setState("idle");
+    setSprite(std::move(animSpr));
+    
     size = glm::vec2(100.0f);
+}
+
+void Player::setWalking(bool value) {
+    if (value == walking) {
+        return;
+    }
+
+    if (value) {
+        walking = true;
+        animatedSprite->setState("walking");
+    } else {
+        walking = false;
+        animatedSprite->setState("idle");
+    }
 }
