@@ -10,7 +10,7 @@ Window::Window(const std::string &title, int w, int h) : m_title(title), width(w
 void Window::init() {
     Logger::log("Initializing window...");
     if (!glfwInit()) {
-        Logger::log("GLFW could not initialize");
+        Logger::error("GLFW could not initialize");
         return;
     }
 
@@ -24,10 +24,10 @@ void Window::init() {
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
-    Logger::log("Creating GLFW Window...");
+    Logger::info("Creating GLFW Window...");
     m_winId = glfwCreateWindow(width, height, m_title.c_str(), NULL, NULL);
     if (m_winId == NULL) {
-        Logger::log("Failed to create GLFW window");
+        Logger::error("Failed to create GLFW window");
         return;
     }
     // Making the OpenGL context as being this window
@@ -35,7 +35,8 @@ void Window::init() {
 
     int version = gladLoadGL(glfwGetProcAddress);
     if (version == 0) {
-        Logger::log("Failed to initialize OpenGL context");
+        Logger::error("Failed to initialize OpenGL context");
+        return;
     }
 
     // This pointer is used to get information in callbacks.
@@ -52,11 +53,11 @@ void Window::init() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    Logger::log("Window initialized!");
+    Logger::info("Window initialized!");
 }
 
 void Window::cleanup() {
-    Logger::log("Destroying window...");
+    Logger::info("Destroying window...");
     glfwDestroyWindow(m_winId);
 }
 

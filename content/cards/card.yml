@@ -1,9 +1,8 @@
-card1: # card id (this is used if you want to get it from elsewhere)
+fire_puncher: # card id (this is used if you want to get it from elsewhere)
   name: "Fire Puncher"
   description:
     - "Punches so fast that his hand creates fire"
     - "(Also, is a pretty chill guy)"
-  image: "/assets/cards/firepuncher.png"
   base_stats:
     attack:
       value: 12.0

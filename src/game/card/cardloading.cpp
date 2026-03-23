@@ -30,7 +30,7 @@ CardValue ResourceManager::getCardValue(YAML::Node &valueConfig, CardValueType t
 
         value.maxValueMultiplier = valueConfig["max_value_multiplier"].as<float>(1.0f);
     } else {
-        Logger::log("Invalid card value config");
+        Logger::warn("Invalid card value config");
     }
 
     return value;
@@ -68,7 +68,7 @@ std::vector<Card> ResourceManager::loadCardConfig(const std::string &configPath,
                         card.defense = ResourceManager::getCardValue(baseStats["defense"], CardValueType::DEFENSE);
                     }
                 } else {
-                    Logger::log("Invalid base stats config: " + configPath);
+                    Logger::warn("Invalid base stats config: " + configPath);
                 }
 
                 YAML::Node cardType = cardConfig["card_type"];
@@ -84,7 +84,7 @@ std::vector<Card> ResourceManager::loadCardConfig(const std::string &configPath,
                         }
                     }
                 } else {
-                    Logger::log("Invalid card type config: " + configPath);
+                    Logger::warn("Invalid card type config: " + configPath);
                 }
 
                 YAML::Node cardColor = cardConfig["card_color"];
@@ -115,17 +115,17 @@ std::vector<Card> ResourceManager::loadCardConfig(const std::string &configPath,
                         }
                     }
                 } else {
-                    Logger::log("Invalid card color config: " + configPath);
+                    Logger::warn("Invalid card color config: " + configPath);
                 }
                 
             } else {
-                Logger::log("Invalid card config: " + configPath);
+                Logger::warn("Invalid card config: " + configPath);
             }
 
             cardList.push_back(std::move(card));
         }
     } else {
-        Logger::log("ERROR: couldn't load card config: " + configPath);
+        Logger::error("Couldn't load card config: " + configPath);
     }
 
     return cardList;

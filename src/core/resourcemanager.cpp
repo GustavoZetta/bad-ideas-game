@@ -29,8 +29,8 @@ std::unique_ptr<StaticSprite> ResourceManager::loadSprite(const std::string &ima
 
     unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, alpha ? 4 : 3);
     if (!data) {
-        Logger::log("Texture loading error: " + imagePath);
-        Logger::log("Reason: " + std::string(stbi_failure_reason()));
+        Logger::error("Texture loading error: " + imagePath);
+        Logger::error("Reason: " + std::string(stbi_failure_reason()));
     }
 
     staticSpr->sprite->createSprite(width, height, data);
@@ -47,7 +47,7 @@ std::unique_ptr<AnimatedSprite> ResourceManager::loadSprite(const std::string &i
     YAML::Node animations = config["animations"];
 
     if (!animations.IsMap()) {
-        Logger::log("Unable to load animated sprite config: " + configPath);
+        Logger::warn("Unable to load animated sprite config: " + configPath);
     }
 
     std::unique_ptr<AnimatedSprite> animSpr = std::make_unique<AnimatedSprite>(std::make_unique<Sprite>());
@@ -63,30 +63,36 @@ std::unique_ptr<AnimatedSprite> ResourceManager::loadSprite(const std::string &i
 
     unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, alpha ? 4 : 3);
     if (!data) {
-        Logger::log("Texture loading error: " + imagePath);
-        Logger::log("Reason: " + std::string(stbi_failure_reason()));
+        Logger::error("Texture loading error: " + imagePath);
+        Logger::error("Reason: " + std::string(stbi_failure_reason()));
     }
 
     animSpr->sprite->createSprite(width, height, data);
     stbi_image_free(data);
 
-    int gridsize = config["gridsize"].as<int>(32);
+    int gridsizex = config["gridsize_x"].as<int>(32);
+    int gridsizey = config["gridsize_y"].as<int>(32);
+
+    if (config["gridsize"].IsDefined()) {
+        gridsizex = config["gridsize"].as<int>(32);
+        gridsizey = gridsizex;
+    }
 
     for (auto state : animations) {
         YAML::Node frames = state.second["frames"];
 
         if (!frames.IsSequence()) {
-            Logger::log("Unable to load animated sprite info from config: " + configPath);
+            Logger::warn("Unable to load animated sprite info from config: " + configPath);
         }
 
         AnimatedInfoList list;
         list.fps = state.second["fps"].as<int>(15);
 
         for (auto frame : frames) {
-            int x = frame["x"].as<int>(0) * gridsize;
-            int y = frame["y"].as<int>(0) * gridsize;
-            int width = frame["width"].as<int>(1) * gridsize;
-            int height = frame["height"].as<int>(1) * gridsize;
+            int x = frame["x"].as<int>(0) * gridsizex;
+            int y = frame["y"].as<int>(0) * gridsizey;
+            int width = frame["width"].as<int>(1) * gridsizex;
+            int height = frame["height"].as<int>(1) * gridsizey;
 
             list.animationFrameInfo.push_back(animSpr->calcUvInfo(x, y, width, height));
         }
@@ -104,7 +110,7 @@ std::unique_ptr<TextureAtlas> ResourceManager::loadAtlas(const std::string &imag
 
     YAML::Node tilesetInfo = config["tileset"];
     if (!tilesetInfo.IsMap()) {
-        Logger::log("Unable to load tileset info: " + configPath);
+        Logger::warn("Unable to load tileset info: " + configPath);
     }
 
     std::unique_ptr<TextureAtlas> atlas = std::make_unique<TextureAtlas>(std::make_unique<Sprite>(), static_cast<int>(tilesetInfo.size()));
@@ -120,27 +126,33 @@ std::unique_ptr<TextureAtlas> ResourceManager::loadAtlas(const std::string &imag
 
     unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, alpha ? 4 : 3);
     if (!data) {
-        Logger::log("Texture loading error: " + imagePath);
-        Logger::log("Reason: " + std::string(stbi_failure_reason()));
+        Logger::error("Texture loading error: " + imagePath);
+        Logger::error("Reason: " + std::string(stbi_failure_reason()));
     }
 
     atlas->sprite->createSprite(width, height, data);
     stbi_image_free(data);
 
-    int gridsize = config["gridsize"].as<int>(32);
+    int gridsizex = config["gridsize_x"].as<int>(32);
+    int gridsizey = config["gridsize_y"].as<int>(32);
 
-    if (width % gridsize != 0 || height % gridsize != 0) {
-        Logger::log("Warning: Texture atlas does not have simetric grid, textures may be clipped");
-        Logger::log("Config path: " + configPath);
-        Logger::log("Image path: " + imagePath);
+    if (config["gridsize"].IsDefined()) {
+        gridsizex = config["gridsize"].as<int>(32);
+        gridsizey = gridsizex;
+    }
+
+    if (width % gridsizex != 0 || height % gridsizey != 0) {
+        Logger::warn("Texture atlas does not have simetric grid, textures may be clipped");
+        Logger::warn("Config path: " + configPath);
+        Logger::warn("Image path: " + imagePath);
     }
 
     for (auto it : tilesetInfo) {
         std::string name = it.first.as<std::string>("");
-        int x = it.second["x"].as<int>(0) * gridsize;
-        int y = it.second["y"].as<int>(0) * gridsize;
-        int width = it.second["width"].as<int>(1) * gridsize;
-        int height = it.second["height"].as<int>(1) * gridsize;
+        int x = it.second["x"].as<int>(0) * gridsizex;
+        int y = it.second["y"].as<int>(0) * gridsizey;
+        int width = it.second["width"].as<int>(1) * gridsizex;
+        int height = it.second["height"].as<int>(1) * gridsizey;
 
         atlas->addUvInfo(name, x, y, width, height);
     }
@@ -156,7 +168,7 @@ std::unique_ptr<Scene> ResourceManager::loadScene(const std::string &scenePath, 
     std::string nullchar = config["nullchar"].as<std::string>("~");
     YAML::Node sceneInfo = config["sprites"];
     if (!sceneInfo.IsMap()) {
-        Logger::log("Unable to load scene info: " + scenePath);
+        Logger::warn("Unable to load scene info: " + scenePath);
     }
 
     std::unique_ptr<Scene> scene = std::make_unique<Scene>(std::move(sceneAtlas));

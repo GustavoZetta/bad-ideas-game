@@ -1,4 +1,5 @@
 gridsize: 32 # multiplies height, width, x and y (32 * x, 32 * height...)
+image_path: "/assets/walking.png"
 animations:
   "walking": # these names are the ones used in the code
     fps: 6

@@ -186,7 +186,7 @@ void Game::initMenu() {
 }
 
 void Game::init() {
-    Logger::log("Initializing Game...");
+    Logger::info("Initializing Game...");
 
     window = std::make_unique<Window>("Fresh out the box", 1280, 720);
     renderer = std::make_unique<SpriteRenderer>();
@@ -197,17 +197,17 @@ void Game::init() {
     initMenu();
     world = std::make_unique<World>();
 
-    Logger::log("Showing Window...");
+    Logger::info("Showing Window...");
     window->showWindow();
 
     setFramerate(0);
 
-    Logger::log("Game Initialized!");
+    Logger::info("Game Initialized!");
     Logger::log("--------------------------------");
 }
 
 void Game::run() {
-    Logger::log("Starting Game Loop...");
+    Logger::info("Starting Game Loop...");
     const std::string wt = window->getTitle();
 
     glm::mat4 projection = glm::ortho(0.0f, Game::gameWidth, Game::gameHeight, 0.0f, -1.0f, 1.0f); // needs to be in the same AspectRatio as the window
@@ -275,7 +275,7 @@ void Game::run() {
             cleanup();
         }
     }
-    Logger::log("Game Loop finalized!");
+    Logger::info("Game Loop finalized!");
 }
 
 void Game::stop() {
@@ -290,10 +290,10 @@ void Game::cleanup() {
         return;
     }
     m_running = false;
-    Logger::log("Stopping Game!");
+    Logger::info("Stopping Game!");
     window->cleanup();
     renderer->cleanup();
-    Logger::log("Terminating GLFW...");
+    Logger::info("Terminating GLFW...");
     glfwTerminate();
 }
 

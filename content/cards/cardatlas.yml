@@ -1,0 +1,7 @@
+gridsize: 64
+tileset:
+  'fire_puncher':
+    x: 0
+    y: 0
+    height: 1
+    width: 1

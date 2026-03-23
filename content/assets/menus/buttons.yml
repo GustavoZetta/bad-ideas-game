@@ -1,22 +1,23 @@
-gridsize: 10 # multiplies height, width, x and y (32 * x, 32 * y...)
+gridsize_x: 60 # multiplies only width and x (60 * x, 60 * width...)
+gridsize_y: 100 # multiplies only height and y (100 * y, 100 * height...)
 tileset: # These chars are used in the scene
   'play':
     x: 0
     y: 0
-    height: 6
-    width: 10
+    height: 1
+    width: 1
   'play_1':
-    x: 10
+    x: 1
     y: 0
-    height: 6
-    width: 10
+    height: 1
+    width: 1
   'quit':
-    x: 20
+    x: 2
     y: 0
-    height: 6
-    width: 10
+    height: 1
+    width: 1
   'quit_1':
-    x: 30
+    x: 3
     y: 0
-    height: 6
-    width: 10
+    height: 1
+    width: 1

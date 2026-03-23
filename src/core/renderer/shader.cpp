@@ -18,8 +18,8 @@ unsigned int Shader::createModule(const char *shaderSrc, unsigned int shaderType
     if (!sucess) {
         char errorLog[1024];
         glGetShaderInfoLog(shaderP, 1024, NULL, errorLog);
-        Logger::log("Shader Module compilation error:\n");
-        Logger::log(errorLog);
+        Logger::error("Shader Module compilation error:\n");
+        Logger::error(errorLog);
     }
 
     return shaderP;
@@ -42,8 +42,8 @@ void Shader::createShader(const std::string &vertexSrc, const std::string &fragm
     if (!sucess) {
         char errorLog[1024];
         glGetProgramInfoLog(m_id, 1024, NULL, errorLog);
-        Logger::log("Shader Linking error:\n");
-        Logger::log(errorLog);
+        Logger::error("Shader Linking error:\n");
+        Logger::error(errorLog);
     }
 
     // Cleaning modules cause it isn't need after the program creation
