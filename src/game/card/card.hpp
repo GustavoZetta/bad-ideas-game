@@ -31,6 +31,7 @@ class Card {
     std::string id; // is also the atlas key
 
     std::string name;
+    std::string rarity;
     std::vector<std::string> description;
 
     TextureAtlas *cardAtlas;

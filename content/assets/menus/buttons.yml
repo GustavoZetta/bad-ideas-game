@@ -1,23 +1,24 @@
 gridsize_x: 100 # multiplies only width and x (100 * x, 100 * width...)
 gridsize_y: 60 # multiplies only height and y (60 * y, 60 * height...)
+# if you have gridsize_x and gridsize_y, do not put gridsize, or else, it substitutes both
 image_path: "/assets/menus/buttons.png"
 tileset: # These chars are used in the scene
-  'play':
+  "play":
     x: 0
     y: 0
     height: 1
     width: 1
-  'play_1':
+  "play_1":
     x: 1
     y: 0
     height: 1
     width: 1
-  'quit':
+  "quit":
     x: 2
     y: 0
     height: 1
     width: 1
-  'quit_1':
+  "quit_1":
     x: 3
     y: 0
     height: 1

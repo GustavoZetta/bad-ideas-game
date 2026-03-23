@@ -1,0 +1,6 @@
+unique_pack: # card pack id
+  name: "Unique Pack"
+  color: [165, 0, 250]
+  cards:
+    - id: "fire_puncher"
+      weight: 2 # The bigger the weight, the more common the card

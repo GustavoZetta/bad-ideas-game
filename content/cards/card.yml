@@ -1,5 +1,6 @@
 fire_puncher: # card id (this is used if you want to get it from elsewhere)
   name: "Fire Puncher"
+  rarity: "unique"
   description:
     - "Punches so fast that his hand creates fire"
     - "(Also, is a pretty chill guy)"
@@ -31,7 +32,7 @@ fire_puncher: # card id (this is used if you want to get it from elsewhere)
         attack_multiplier: 1.75
   card_color:
     color: "red"
-    rgb: [ 255, 0, 0 ]
+    rgb: [255, 0, 0]
     buffs:
       "red":
         attack:

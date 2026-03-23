@@ -36,10 +36,10 @@ CardValue ResourceManager::getCardValue(YAML::Node &valueConfig, CardValueType t
     return value;
 }
 
-std::vector<Card> ResourceManager::loadCardConfig(const std::string &configPath, TextureAtlas *cardAtlas) {
+std::unordered_map<std::string, Card> ResourceManager::loadCards(const std::string &configPath, TextureAtlas *cardAtlas) {
     YAML::Node config = YAML::LoadFile(configPath);
 
-    std::vector<Card> cardList;
+    std::unordered_map<std::string, Card> cardList;
 
     if (config.IsMap()) {
         for (auto cardConfig : config) {
@@ -50,6 +50,7 @@ std::vector<Card> ResourceManager::loadCardConfig(const std::string &configPath,
                 card.id = cardConfig.first.as<std::string>("card");
 
                 card.name = cardConfig.second["name"].as<std::string>("<name>");
+                card.rarity = cardConfig.second["rarity"].as<std::string>("<rarity>");
                 card.description = cardConfig.second["description"].as<std::vector<std::string>>(std::vector<std::string>{"<description>"});
 
                 YAML::Node baseStats = cardConfig["base_stats"];
@@ -122,7 +123,7 @@ std::vector<Card> ResourceManager::loadCardConfig(const std::string &configPath,
                 Logger::warn("Invalid card config: " + configPath);
             }
 
-            cardList.push_back(std::move(card));
+            cardList[card.id] = std::move(card);
         }
     } else {
         Logger::error("Couldn't load card config: " + configPath);

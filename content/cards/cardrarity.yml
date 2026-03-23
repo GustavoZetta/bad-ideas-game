@@ -1,0 +1,6 @@
+unique: # Rarity id
+  name: "Unique"
+  color: [165, 0, 250]
+  description:
+    - "Woah"
+    - "Just feels like magic"

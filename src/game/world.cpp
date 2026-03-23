@@ -1,7 +1,9 @@
 #include "core/resourcemanager.hpp"
 #include "core/util.hpp"
 
-#include "world.hpp"
+#include "game/card/cardloading.hpp"
+
+#include "game/world.hpp"
 
 World::World() {
     player = std::make_unique<Player>();
@@ -29,6 +31,10 @@ World::World() {
         ResourceManager::loadTextureAtlas(
             Common::getContentPath("/assets/tilesets/test.yml"),
             true));
+
+    cardAtlas = ResourceManager::loadTextureAtlas(Common::getContentPath("/cards/cardatlas.yml"), true);
+
+    cards = std::move(ResourceManager::loadCardConfig(Common::getContentPath("/cards/card.yml"), cardAtlas.get()));
 }
 
 void World::update(float deltaTime) {
