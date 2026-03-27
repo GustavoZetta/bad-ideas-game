@@ -33,46 +33,47 @@ CardValue ResourceManager::getCardValue(YAML::Node &valueConfig, CardValueType t
         Logger::warn("Invalid card value config");
     }
 
-    return value;
+    return std::move(value);
 }
 
 std::unordered_map<std::string, Card> ResourceManager::loadCards(const std::string &configPath, TextureAtlas *cardAtlas) {
-    YAML::Node config = YAML::LoadFile(configPath);
 
     std::unordered_map<std::string, Card> cardList;
+
+    YAML::Node config = YAML::LoadFile(configPath);
 
     if (config.IsMap()) {
         for (auto cardConfig : config) {
             Card card;
 
             card.cardAtlas = cardAtlas;
-            if (cardConfig.IsMap()) {
+            if (cardConfig.second.IsMap()) {
                 card.id = cardConfig.first.as<std::string>("card");
 
                 card.name = cardConfig.second["name"].as<std::string>("<name>");
                 card.rarity = cardConfig.second["rarity"].as<std::string>("<rarity>");
                 card.description = cardConfig.second["description"].as<std::vector<std::string>>(std::vector<std::string>{"<description>"});
 
-                YAML::Node baseStats = cardConfig["base_stats"];
+                YAML::Node baseStats = cardConfig.second["base_stats"];
 
                 if (baseStats.IsMap()) {
                     if (baseStats["attack"].IsDefined()) {
-                        card.attack = ResourceManager::getCardValue(baseStats["attack"], CardValueType::ATTACK);
+                        card.attack = std::move(ResourceManager::getCardValue(baseStats["attack"], CardValueType::ATTACK));
                     }
                     if (baseStats["stamina"].IsDefined()) {
-                        card.stamina = ResourceManager::getCardValue(baseStats["stamina"], CardValueType::STAMINA);
+                        card.stamina = std::move(ResourceManager::getCardValue(baseStats["stamina"], CardValueType::STAMINA));
                     }
                     if (baseStats["health"].IsDefined()) {
-                        card.health = ResourceManager::getCardValue(baseStats["health"], CardValueType::HEALTH);
+                        card.health = std::move(ResourceManager::getCardValue(baseStats["health"], CardValueType::HEALTH));
                     }
                     if (baseStats["defense"].IsDefined()) {
-                        card.defense = ResourceManager::getCardValue(baseStats["defense"], CardValueType::DEFENSE);
+                        card.defense = std::move(ResourceManager::getCardValue(baseStats["defense"], CardValueType::DEFENSE));
                     }
                 } else {
                     Logger::warn("Invalid base stats config: " + configPath);
                 }
 
-                YAML::Node cardType = cardConfig["card_type"];
+                YAML::Node cardType = cardConfig.second["card_type"];
 
                 if (cardType.IsMap()) {
                     card.cardType = cardType["type"].as<std::string>("<type>");
@@ -80,7 +81,7 @@ std::unordered_map<std::string, Card> ResourceManager::loadCards(const std::stri
                     if (cardType["defeats"].IsMap()) {
                         for (auto defeat : cardType["defeats"]) {
                             std::string key = defeat.first.as<std::string>();
-                            
+
                             card.defeats[key] = ResourceManager::getCardValue(defeat.second, CardValueType::ATTACK);
                         }
                     }
@@ -88,14 +89,14 @@ std::unordered_map<std::string, Card> ResourceManager::loadCards(const std::stri
                     Logger::warn("Invalid card type config: " + configPath);
                 }
 
-                YAML::Node cardColor = cardConfig["card_color"];
+                YAML::Node cardColor = cardConfig.second["card_color"];
 
                 if (cardColor.IsMap()) {
                     card.cardColor = cardColor["color"].as<std::string>("<color>");
-                    std::array<int, 3> intcolor = cardColor["rgb"].as<std::array<int, 3>>();
+                    std::array<int, 3> intcolor = cardColor["rgb"].as<std::array<int, 3>>(std::array<int, 3>{255, 255, 255});
 
-                    card.color = glm::vec3((float) intcolor[1] / 255, (float) intcolor[2] / 255, (float) intcolor[3] / 255);
-                    
+                    card.color = glm::vec3((float)intcolor[0] / 255, (float)intcolor[1] / 255, (float)intcolor[2] / 255);
+
                     if (cardColor["buffs"].IsMap()) {
                         for (auto buff : cardColor["buffs"]) {
                             std::string key = buff.first.as<std::string>("<key>");
@@ -118,7 +119,7 @@ std::unordered_map<std::string, Card> ResourceManager::loadCards(const std::stri
                 } else {
                     Logger::warn("Invalid card color config: " + configPath);
                 }
-                
+
             } else {
                 Logger::warn("Invalid card config: " + configPath);
             }
@@ -128,6 +129,11 @@ std::unordered_map<std::string, Card> ResourceManager::loadCards(const std::stri
     } else {
         Logger::error("Couldn't load card config: " + configPath);
     }
-
     return cardList;
+}
+
+std::unordered_map<std::string, CardPack> loadCardPacks(const std::string &configPath) {
+    std::unordered_map<std::string, CardPack> map;
+
+    return map;
 }

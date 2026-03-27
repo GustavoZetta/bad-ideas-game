@@ -1,7 +1,9 @@
 BasedOnStyle: LLVM 
-ClosingParenPosition: NextLine
+AlignAfterOpenBracket: BlockIndent
+AllowAllArgumentsOnNextLine: true
+BinPackArguments: false
 UseTab: Never
 IndentWidth: 4
 BreakBeforeBraces: Attach
 NamespaceIndentation: All
-ColumnLimit: 0 
+ColumnLimit: 0

@@ -34,7 +34,7 @@ World::World() {
 
     cardAtlas = ResourceManager::loadTextureAtlas(Common::getContentPath("/cards/cardatlas.yml"), true);
 
-    cards = std::move(ResourceManager::loadCardConfig(Common::getContentPath("/cards/card.yml"), cardAtlas.get()));
+    cards = std::move(ResourceManager::loadCards(Common::getContentPath("/cards/card.yml"), cardAtlas.get()));
 }
 
 void World::update(float deltaTime) {

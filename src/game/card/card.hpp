@@ -34,7 +34,7 @@ class Card {
     std::string rarity;
     std::vector<std::string> description;
 
-    TextureAtlas *cardAtlas;
+    TextureAtlas *cardAtlas = nullptr;
 
     CardValue attack;
     CardValue stamina;
